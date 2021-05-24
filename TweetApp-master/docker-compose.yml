@@ -1,0 +1,26 @@
+version: '3'
+services:
+   mongo:
+    image: 'mongo:3.4.1'
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb:/data/db
+   tweet-application:
+    image: tweet-application
+    build: tweetapp/.
+    ports:
+      - 8050:8050
+    depends_on:
+      - mongo
+    links:
+      - mongo
+   tweet-web-app:
+    image: tweet-web-app
+    build: webapp/.
+    ports:
+      - 8095:80
+    links:
+      - tweet-application
+volumes:
+  mongodb:
